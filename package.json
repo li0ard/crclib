@@ -1,0 +1,38 @@
+{
+  "name": "crclib",
+  "version": "1.0.0",
+  "description": "This library allows you to calculate CRC for different types of keys",
+  "main": "index.js",
+  "scripts": {
+    "test": "node test.js"
+  },
+  "keywords": [
+    "crc",
+    "lizard",
+    "crclib",
+    "dallas",
+    "texkom",
+    "urmet",
+    "hid",
+    "mifare",
+    "ultralight",
+    "kt01",
+    "tk17"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/li0ard/crclib.git"
+  },
+  "bugs": {
+    "url": "https://github.com/li0ard/crclib/issues"
+  },
+  "homepage": "https://github.com/li0ard/crclib#readme",
+  "author": "li0ard",
+  "contributors": [
+  	{
+  		"name": "Ikey LCC",
+  		"url": "https://ikey.ru"
+  	}
+  ],
+  "license": "MIT"
+}
