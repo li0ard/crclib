@@ -1,6 +1,6 @@
 {
   "name": "crclib",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "This library allows you to calculate CRC for different types of keys",
   "main": "index.js",
   "scripts": {
