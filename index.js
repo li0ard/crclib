@@ -1,7 +1,7 @@
 class crclib {
 	constructor() {
 		this._name_ = `CRCLib`
-		this._version_ = "v1.0"
+		this._version_ = "v1.0.1"
 		this._author_ = "li0ard"
 	}
 	test() {
@@ -11,9 +11,10 @@ class crclib {
 		console.log(`ТехКом ТК-17 (32:32:44:55:CA:FF:FF): ` + this.tk17([0x00, 0x32, 0x32, 0x44, 0x55, 0xCA, 0xFF, 0xFF]) )
 		console.log(`Mifare (AA:BB:CD:EF): ` + this.mifare([0xAA, 0xBB, 0xCD, 0xEF]) )
 		console.log(`Mifare 3 байта (AA:BB:CC): ` + this.mifare3([0xAA, 0xBB, 0xCC]) )
-		console.log(`HID37 (56:5A:11:40:BE): ` + this.hid37([0x56, 0x5A, 0x11, 0x40, 0xBE]) )
+		console.log(`HID37 (56:5A:11:40:BE): ` + this.fixHid37([0x56, 0x5A, 0x11, 0x40, 0xBE]) )
 		console.log(`Urmet (F2:00:00:98:76:54:32): ` + this.urmet([0xF2, 0x00, 0x00, 0x98, 0x76, 0x54, 0x32]))
-
+		console.log(`PAC: ` + this.fixPAC([0x12, 0x21, 0xAA, 0xBB, 0xCC, 0xDD, 0xEE, 0xFF, 0x12, 0x34, 0x56, 0x78, 0x90, 0x00, 0x00, 0x00]))
+		console.log(`METAKOM: 9AD1E1` + this.fixMetakomByte(0x9AD1E1D0))
 	}
 	texkom(arrby) {
 		var n = 4;
@@ -135,7 +136,7 @@ class crclib {
         	return "FF"
         }
 	}
-	hid37(arrby) {
+	fixHid37(arrby) {
 		if(arrby.length < 5) return [0x00, 0x00, 0x00, 0x00, 0x00];
 		if(parseInt(arrby[0].toString(),16) > 7) {
 			arrby[0] = 0x07
@@ -158,6 +159,39 @@ class crclib {
 		value = value.toString(16).toUpperCase()
 		return `${value[6]}${value[7]}`
 	}
+	fixPAC(arrby) {
+		if(arrby.length == 16) {
+			arrby[0] = 0x00;
+			if(parseInt(arrby[1].toString(),16) != 1) {
+				arrby[1] = 0x01
+			}
+			for(var i = 0; i<arrby.length; i++) {
+				arrby[i] = arrby[i].toString(16).toUpperCase()
+			}
+			return arrby
+		}
+		else {
+			return [0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00]
+		}
+	}
+	fixMetakomByte(by) {
+        var n = by & 255;
+        by = n;
+        var n2 = 0;
+        for (var i = 0; i < 8; ++i) {
+            var n3 = n2;
+            if ((by & 1) != 0) {
+                n3 = n2 + 1;
+            }
+            by = by >> 1;
+            n2 = n3;
+        }
+        by = n;
+        if (n2 % 2 != 0) {
+            by = (n & 1) == 0 ? (n | 1) : (n & 254);
+        }
+        return by.toString(16).toUpperCase();
+    }
 }
 
 module.exports = crclib
